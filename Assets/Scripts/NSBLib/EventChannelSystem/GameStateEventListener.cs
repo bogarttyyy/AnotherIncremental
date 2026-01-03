@@ -1,4 +1,4 @@
-﻿using Enums;
+﻿using NSBLib.Enums;
 
 namespace NSBLib.EventChannelSystem
 {
