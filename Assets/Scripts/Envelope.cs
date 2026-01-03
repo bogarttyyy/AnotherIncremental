@@ -22,9 +22,8 @@ public class Envelope : MonoBehaviour
     private Action<Envelope> destroyAction;
     
     private TweenerCore<Vector3, Vector3, VectorOptions> envelopeTween;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private void OnEnable()
     {
         if (destTransform != null)
         {
@@ -46,6 +45,12 @@ public class Envelope : MonoBehaviour
         }
         
         GoToDestination();
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        
 
         // StartCoroutine(DelayedDestroy());
     }
@@ -58,7 +63,7 @@ public class Envelope : MonoBehaviour
     IEnumerator DelayedDestroy()
     {
         yield return new WaitForSeconds(lifetime);
-        Destroy(gameObject);
+        destroyAction(this);
     }
 
     public void ScheduleDestroy()
@@ -71,7 +76,7 @@ public class Envelope : MonoBehaviour
         envelopeTween = transform.DOMove(destCoords, tweenDuration).SetEase(tweenEase);
         envelopeTween.OnComplete(() =>
             {
-                NSBLogger.Log("DONE!");
+                destroyAction(this);
             }
         );
     }
@@ -100,5 +105,10 @@ public class Envelope : MonoBehaviour
     {
         destTransform = destination;
         destCoords = destTransform.position;
+    }
+
+    public void SetPosition(Vector3 randomizePosition)
+    {
+        transform.position = randomizePosition;
     }
 }

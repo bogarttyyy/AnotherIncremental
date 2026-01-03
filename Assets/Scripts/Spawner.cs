@@ -12,6 +12,7 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] private Envelope prefab;
     [SerializeField] private float spawnRate = 1f;
+    [SerializeField] private int spawnAmount = 10;
     [SerializeField] private float tweenDuration = .5f;
     [SerializeField] private float envelopeLifetime = 1f;
     [SerializeField] private Vector2 spawnPointRange;
@@ -29,6 +30,7 @@ public class Spawner : MonoBehaviour
             return Instantiate(prefab, RandomizePosition(), Quaternion.identity, transform);
         }, env =>
         {
+            SetupEnvelope(env);
             env.gameObject.SetActive(true);
         }, env =>
         {
@@ -37,6 +39,7 @@ public class Spawner : MonoBehaviour
         {
             Destroy(env.gameObject);
         }, false, 100, 10000);
+        
         StartCoroutine(Spawn());
     }
 
@@ -45,22 +48,24 @@ public class Spawner : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(spawnRate);
-            // Envelope envelope = Instantiate(prefab, RandomizePosition(), Quaternion.identity, transform);
             Envelope envelope = pool.Get();
-            RandomizeEnvelope(envelope);
-            NSBLogger.Log($"Spawned at: {envelope.transform.position}");
-            // AddObject(envelope);
         }
     }
 
-    private void RandomizeEnvelope(Envelope envelope)
+    private void SetupEnvelope(Envelope env)
     {
-        envelope.SetEnvelopeType((EEnvelopeType)Random.Range(0, 3));
-        envelope.SetEaseType(tweenEase);
-        envelope.SetDuration(tweenDuration);
-        envelope.SetLifetime(envelopeLifetime);
-        envelope.SetDesination(target);
-        envelope.ScheduleDestroy();
+        env.SetPosition(RandomizePosition());
+        env.SetEnvelopeType((EEnvelopeType)Random.Range(0, 3));
+        env.SetEaseType(tweenEase);
+        env.SetDuration(tweenDuration);
+        env.SetLifetime(envelopeLifetime);
+        env.SetDesination(target);
+        env.Init(DestroyEnvelope);
+    }
+
+    private void DestroyEnvelope(Envelope obj)
+    {
+        pool.Release(obj);
     }
 
     private Vector3 RandomizePosition()

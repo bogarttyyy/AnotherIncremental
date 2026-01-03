@@ -217,7 +217,7 @@ Transform:
   m_GameObject: {fileID: 412856069}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.56, z: 0}
+  m_LocalPosition: {x: 0, y: -1.56, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -253,8 +253,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09169f5cd895a443a29d9622dfcbb34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Spawner
-  prefab: {fileID: 2022994773}
-  spawnPointRange: {x: 0, y: 6}
+  prefab: {fileID: 6025198724889100874, guid: 665112dae8cadf64d8c08ab63677b3e9, type: 3}
+  spawnRate: 0.1
+  spawnAmount: 1
+  tweenDuration: 1
+  envelopeLifetime: 1
+  spawnPointRange: {x: 0, y: 4}
+  tweenEase: 10
+  target: {fileID: 412856072}
   objects: []
 --- !u!4 &457464325
 Transform:
@@ -265,7 +271,7 @@ Transform:
   m_GameObject: {fileID: 457464323}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.74, y: -0.05, z: 0}
+  m_LocalPosition: {x: -10.09, y: -0.05, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -630,17 +636,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &2022994773 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6025198724889100874, guid: 665112dae8cadf64d8c08ab63677b3e9, type: 3}
-  m_PrefabInstance: {fileID: 4041417331011827683}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4f477c44b6f9e54db62fa3367c416b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Envelope
 --- !u!1001 &4041417331011827683
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -652,6 +647,10 @@ PrefabInstance:
     - target: {fileID: 1562644508643174430, guid: 665112dae8cadf64d8c08ab63677b3e9, type: 3}
       propertyPath: m_Name
       value: Envelope
+      objectReference: {fileID: 0}
+    - target: {fileID: 1562644508643174430, guid: 665112dae8cadf64d8c08ab63677b3e9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2925959371773484116, guid: 665112dae8cadf64d8c08ab63677b3e9, type: 3}
       propertyPath: m_LocalPosition.x
