@@ -104,3 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4f477c44b6f9e54db62fa3367c416b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Envelope
+  envelopeType: 0
+  destTransform: {fileID: 0}
+  tweenDuration: 0.15
+  tweenEase: 32
