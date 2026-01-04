@@ -12,7 +12,7 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] private Envelope prefab;
     [SerializeField] private float spawnRate = 1f;
-    [SerializeField] private int spawnAmount = 10;
+    // [SerializeField] private int spawnAmount = 10;
     [SerializeField] private float tweenDuration = .5f;
     [SerializeField] private float envelopeLifetime = 1f;
     [SerializeField] private Vector2 spawnPointRange;
