@@ -1,7 +1,6 @@
-﻿using NSBLib.Helpers;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Interfaces
+namespace NSBLib.Interfaces
 {
     public abstract class Draggable : MonoBehaviour, IDraggable
     {

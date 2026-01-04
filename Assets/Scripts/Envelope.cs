@@ -15,6 +15,9 @@ public class Envelope : MonoBehaviour
     [SerializeField] private float tweenDuration = 0.3f;
     [SerializeField] private Ease tweenEase = Ease.Flash;
     [SerializeField] private float lifetime = 1f;
+
+    [SerializeField] private Sprite open;
+    [SerializeField] private Sprite closed;
     
     public Spawner spawner;
     private Vector2 destCoords =  Vector2.zero;
@@ -76,7 +79,7 @@ public class Envelope : MonoBehaviour
         envelopeTween = transform.DOMove(destCoords, tweenDuration).SetEase(tweenEase);
         envelopeTween.OnComplete(() =>
             {
-                destroyAction(this);
+                // destroyAction(this);
             }
         );
     }

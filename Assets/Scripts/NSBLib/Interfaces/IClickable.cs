@@ -1,4 +1,4 @@
-﻿namespace Interfaces
+﻿namespace NSBLib.Interfaces
 {
     public interface IClickable
     {
