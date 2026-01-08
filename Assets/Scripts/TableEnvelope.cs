@@ -7,14 +7,17 @@ public class TableEnvelope : MonoBehaviour, IClickable
 {
     [SerializeField] private Sprite open;
     [SerializeField] private Sprite closed;
+    [SerializeField] private GameObject floatingText;
 
     public bool isClosed = true;
-    
+
+    private Animator animator;
     private SpriteRenderer sr;
 
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
+        animator = floatingText?.GetComponent<Animator>();
         SetSprite();
     }
 
@@ -37,6 +40,7 @@ public class TableEnvelope : MonoBehaviour, IClickable
         {
             isClosed = false;
             SetSprite();
+            // animator.SetBool("MoveText", true);
         }
     }
 
