@@ -1,9 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NSBLib.Helpers;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Table : MonoBehaviour
 {
@@ -101,5 +101,15 @@ public class Table : MonoBehaviour
             cards[card.tableIndex.Value] = null;
             card.gameObject.SetActive(false);
         }
+    }
+
+    public Card PickRandomCard()
+    {
+        var presentCards = cards.Where(t => t);
+        var pickedCard  = presentCards.ElementAt(Random.Range(0, presentCards.Count()));
+        RemoveCard(pickedCard);
+
+            
+        return pickedCard;
     }
 }

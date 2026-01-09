@@ -1,7 +1,5 @@
-using System;
 using Enums;
 using EventChannels;
-using Managers;
 using NSBLib.EventChannelSystem;
 using NSBLib.Helpers;
 using UnityEngine;
@@ -14,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private IntEventChannel updateCash;
     [SerializeField] private CardEventChannel addToInventory;
+    [SerializeField] private CardEventChannel sellCard;
 
     private void Awake()
     {
@@ -48,7 +47,11 @@ public class GameManager : MonoBehaviour
 
     private void SellLogic(Card card)
     {
-        throw new NotImplementedException();
+        NSBLogger.Log($"SOLD! ${card.askingPrice}");
+        cash += card.askingPrice;
+        updateCash?.Invoke(cash);
+        sellCard?.Invoke(card);
+        
     }
 
     private void BuyLogic(Card card)
@@ -59,11 +62,20 @@ public class GameManager : MonoBehaviour
         {
             cash -= card.askingPrice;
             updateCash?.Invoke(cash);
+            
+            UpdateBoughtCard(card);
             addToInventory?.Invoke(card);
         }
         else
         {
             NSBLogger.Log($"Not enough cash to buy {card.askingPrice}");
         }
+    }
+
+    private void UpdateBoughtCard(Card card)
+    {
+        card.SetBoughtPrice(card.askingPrice);
+        card.SetAskingPrice(0);
+        card.SetBuySell(EBuySell.Unknown);
     }
 }

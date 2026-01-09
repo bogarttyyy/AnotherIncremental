@@ -1,8 +1,5 @@
-using System;
 using Enums;
 using EventChannels;
-using NSBLib.Enums;
-using NSBLib.Helpers;
 using NSBLib.Interfaces;
 using ScriptableObjects;
 using TMPro;
@@ -13,14 +10,17 @@ public class Card : MonoBehaviour, IClickable
 {
     public int marketPrice;
     public int askingPrice;
+    public int boughtPrice;
     public ECardRarity rarity;
     public EBuySell buySell;
     public int? tableIndex;
 
     [SerializeField] private TMP_Text marketPriceText;
     [SerializeField] private TMP_Text askingPriceText;
+    [SerializeField] private TMP_Text boughtPriceText;
 
     [SerializeField] private CardEventChannel SelectCard;
+    [SerializeField] private CardEventChannel RejectCard;
     
     SpriteRenderer spriteRenderer;
 
@@ -48,30 +48,44 @@ public class Card : MonoBehaviour, IClickable
         askingPrice = card.price;
     }
 
-    public void SetupCard(ECardRarity newRarity, int newMarketPrice, int newAskingPrice, EBuySell newBuySell)
+    public void SetupCard(ECardRarity newRarity, int newMarketPrice, int newAskingPrice, EBuySell newBuySell, int newBoughtPrice = 0)
     {
         SetRarity(newRarity);
-        SetMarketPriceText(newMarketPrice);
-        SetAskingPriceText(newAskingPrice);
-        buySell = newBuySell;
+        SetMarketPrice(newMarketPrice);
+        SetAskingPrice(newAskingPrice);
+        SetBoughtPrice(newBoughtPrice);
+        SetBuySell(newBuySell);
     }
 
-    public void SetAskingPriceText(int newAskingPrice)
+    public void SetAskingPrice(int newAskingPrice)
     {
         askingPrice = newAskingPrice;
-        askingPriceText.text = $"Asking\n${newAskingPrice}";
+        askingPriceText.text = $"A ${newAskingPrice}";
+        askingPriceText.gameObject.SetActive(askingPrice > 0);
     }
 
-    public void SetMarketPriceText(int newMarketPrice)
+    public void SetMarketPrice(int newMarketPrice)
     {
         marketPrice = newMarketPrice;
-        marketPriceText.text = $"Market\n${newMarketPrice}";
+        marketPriceText.text = $"M ${newMarketPrice}";
+    }
+
+    public void SetBoughtPrice(int newBoughtPrice)
+    {
+        boughtPrice = newBoughtPrice;
+        boughtPriceText.text = $"B ${newBoughtPrice}";
+        boughtPriceText.gameObject.SetActive(boughtPrice > 0);
     }
 
     public void OnClicked()
     {
         // NSBLogger.Log($"Clicked card {this.name}");
         SelectCard?.Invoke(this);
+    }
+
+    public void OnRightClicked()
+    {
+        RejectCard?.Invoke(this);
     }
 
     public bool IsBuy()
@@ -82,5 +96,10 @@ public class Card : MonoBehaviour, IClickable
     public bool IsSell()
     {
         return buySell == EBuySell.Sell;
+    }
+
+    public void SetBuySell(EBuySell newBuySell)
+    {
+        buySell = newBuySell;
     }
 }

@@ -45,6 +45,11 @@ public class TableEnvelope : MonoBehaviour, IClickable
         }
     }
 
+    public void OnRightClicked()
+    {
+        throw new NotImplementedException();
+    }
+
     private void SetSprite()
     {
         sr.sprite = isClosed ? closed : open;

@@ -1,6 +1,4 @@
-﻿using System;
-using NSBLib.Helpers;
-using NSBLib.Interfaces;
+﻿using NSBLib.Interfaces;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -42,7 +40,7 @@ namespace NSBLib.Managers
             Vector2 screenPos = mouse.position.ReadValue();
             
             // 1. On Mouse Down: Record start position and check UI
-            if (mouse.leftButton.wasPressedThisFrame)
+            if (mouse.leftButton.wasPressedThisFrame || mouse.rightButton.wasPressedThisFrame)
             {
                 if (!isClickHeld)
                 {
@@ -93,7 +91,7 @@ namespace NSBLib.Managers
             }
             
             // 2. While Holding: Process Drag
-            if (mouse.leftButton.isPressed)
+            if (mouse.leftButton.isPressed ||  mouse.rightButton.isPressed)
             {
                 if (isFirstClick)
                 {
@@ -138,7 +136,7 @@ namespace NSBLib.Managers
             }
 
             // 3. On Mouse Up: Check distance to determine if it was a Click or Drag
-            if (mouse.leftButton.wasReleasedThisFrame)
+            if (mouse.leftButton.wasReleasedThisFrame || mouse.rightButton.wasReleasedThisFrame)
             {
                 // Release draggable
                 currentDraggable?.OnDragReleased();
@@ -166,7 +164,10 @@ namespace NSBLib.Managers
                     //NSBLogger.Log($"Hit3D: {hit3D.collider.gameObject.name}");
                 
                     var clickable = hit3D.collider.GetComponentInParent<IClickable>();
-                    clickable?.OnClicked();
+                    if (mouse.rightButton.wasReleasedThisFrame)
+                        clickable?.OnRightClicked();
+                    else
+                        clickable?.OnClicked();
                     return;
                 }
             
@@ -175,7 +176,10 @@ namespace NSBLib.Managers
                 {
                     // NSBLogger.Log($"Hit2D: {hit2D.collider.gameObject.name}");
                     var clickable = hit2D.collider.GetComponentInParent<IClickable>();
-                    clickable?.OnClicked();
+                    if (mouse.rightButton.wasReleasedThisFrame)
+                        clickable?.OnRightClicked();
+                    else
+                        clickable?.OnClicked();
                 }
                 else
                 {

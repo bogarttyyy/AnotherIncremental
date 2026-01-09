@@ -14,17 +14,17 @@ namespace Managers
         [SerializeField] private Table buyTable;
         private List<Transform> buySlots;
         [SerializeField] private Table sellTable;
+        [SerializeField] private Table customerTable;
         private List<Transform> sellSlots;
-    
+
         [SerializeField] private Card cardTemplate;
-        [SerializeField] private int cardsToBuySize = 3;
         [SerializeField] private List<Card> cardsToBuy;
-        [SerializeField] private int cardsToSellSize = 10;
         [SerializeField] private List<Card> cardsToSell;
         [SerializeField] private List<Card> cardInventory = new();
-        
+
         private Coroutine buyCoroutine;
-    
+        private Coroutine sellCoroutine;
+
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -41,6 +41,7 @@ namespace Managers
         {
             InitializeBuySellList();
             buyCoroutine = StartCoroutine(GenerateBuyCards());
+            sellCoroutine = StartCoroutine(GenerateCustomers());
         }
 
         IEnumerator GenerateBuyCards()
@@ -55,11 +56,26 @@ namespace Managers
             buyCoroutine = null;
         }
 
+        IEnumerator GenerateCustomers()
+        {
+            while (sellTable.GetCards().Any(t => t) && customerTable.GetCards().Any(t => !t))
+            {
+                yield return new WaitForSeconds(2f);
+                var card = sellTable.PickRandomCard();
+                card.buySell = EBuySell.Sell;
+                card.SetAskingPrice(Mathf.RoundToInt((Random.Range(70, 100 + 1) / 100f) * card.marketPrice));
+                customerTable.InsertToNextEmptySlot(card);
+            }
+
+            sellCoroutine = null;
+        }
+
         public Card CreateBuyCard(ECardRarity rarity)
         {
             var newCard = Instantiate(cardTemplate);
             var marketPrice = RandomizeMarketPrice(rarity);
-            newCard.SetupCard(rarity, marketPrice, marketPrice,EBuySell.Buy);
+            var askingPrice = Mathf.RoundToInt((Random.Range(60, 85 + 1) / 100f) * marketPrice);
+            newCard.SetupCard(rarity, marketPrice, askingPrice, EBuySell.Buy);
             return newCard;
         }
 
@@ -80,7 +96,7 @@ namespace Managers
                 buySlots = buyTable.GetSlotList();
             else
                 NSBLogger.Log("Buy slots not found");
-        
+
             if (sellTable != null)
                 sellSlots = sellTable.GetSlotList();
             else
@@ -91,8 +107,30 @@ namespace Managers
         {
             buyTable.RemoveCard(card);
             sellTable.InsertToNextEmptySlot(card);
-            
+
             buyCoroutine ??= StartCoroutine(GenerateBuyCards());
+            sellCoroutine ??= StartCoroutine(GenerateCustomers());
+        }
+
+        public void SellCard(Card card)
+        {
+            customerTable.RemoveCard(card);
+            sellCoroutine ??= StartCoroutine(GenerateCustomers());
+        }
+
+        public void RejectCard(Card card)
+        {
+            switch (card.buySell)
+            {
+                case EBuySell.Buy:
+                    buyTable.RemoveCard(card);
+                    buyCoroutine ??= StartCoroutine(GenerateBuyCards());
+                    break;
+                case EBuySell.Sell:
+                    // sellTable.RemoveCard(card);
+                    // sellCoroutine ??= StartCoroutine(GenerateCustomers());
+                    break;
+            }
         }
     }
 }

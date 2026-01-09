@@ -3,5 +3,6 @@
     public interface IClickable
     {
         void OnClicked();
+        void OnRightClicked();
     }
 }
