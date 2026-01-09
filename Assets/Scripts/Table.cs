@@ -77,7 +77,7 @@ public class Table : MonoBehaviour
         return cards;
     }
     
-    public void InsertToNextEmptySlot(Card card)
+    public void InsertToNextEmptySlot(Card card, bool isTemporary = false)
     {
         if (!card.gameObject.activeSelf)
         {
@@ -85,8 +85,12 @@ public class Table : MonoBehaviour
         }
         
         var emptySlotIndex = cards.FindIndex(t => !t);
+
+        if (!isTemporary)
+        {
+            card.tableIndex = emptySlotIndex;
+        }
         
-        card.tableIndex = emptySlotIndex;
         card.transform.SetParent(slotList[emptySlotIndex]);
         card.transform.localScale *= scaleCard;
         card.transform.position = new  Vector3(slotList[emptySlotIndex].transform.position.x, slotList[emptySlotIndex].transform.position.y, slotList[emptySlotIndex].transform.position.z -1);
@@ -108,7 +112,6 @@ public class Table : MonoBehaviour
         var presentCards = cards.Where(t => t);
         var pickedCard  = presentCards.ElementAt(Random.Range(0, presentCards.Count()));
         RemoveCard(pickedCard);
-
             
         return pickedCard;
     }

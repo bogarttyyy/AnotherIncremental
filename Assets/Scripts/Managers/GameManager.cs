@@ -8,12 +8,15 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    [SerializeField] private float duration = 60f;
+    [SerializeField] private float currentTime;
     [SerializeField] private int cash;
 
     [SerializeField] private IntEventChannel updateCash;
     [SerializeField] private CardEventChannel addToInventory;
     [SerializeField] private CardEventChannel sellCard;
-
+    [SerializeField] private FloatEventChannel updateTime;
+    
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -29,6 +32,12 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         updateCash?.Invoke(cash);
+        currentTime = duration;
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateTimer();
     }
 
     public void OnCardClicked(Card card)
@@ -77,5 +86,21 @@ public class GameManager : MonoBehaviour
         card.SetBoughtPrice(card.askingPrice);
         card.SetAskingPrice(0);
         card.SetBuySell(EBuySell.Unknown);
+    }
+
+    private void UpdateTimer()
+    {
+        if (currentTime > 0)
+        {
+            currentTime -= Time.deltaTime;
+            updateTime?.Invoke(currentTime / duration);
+
+            if (currentTime <= 0)
+            {
+                currentTime = 0;
+                updateTime?.Invoke(0f);
+                // Trigger Game Over or Time Up logic here
+            }
+        }
     }
 }

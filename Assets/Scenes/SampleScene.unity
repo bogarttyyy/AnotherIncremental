@@ -695,6 +695,7 @@ GameObject:
   - component: {fileID: 203968500}
   - component: {fileID: 203968499}
   - component: {fileID: 203968501}
+  - component: {fileID: 203968502}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -715,6 +716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   cashText: {fileID: 1629943813}
+  timeProgressBar: {fileID: 2128129071}
 --- !u!4 &203968500
 Transform:
   m_ObjectHideFlags: 0
@@ -749,6 +751,34 @@ MonoBehaviour:
       - m_Target: {fileID: 203968499}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: UpdateCashText
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &203968502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203968498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5623a69037804ccb869932f1e18766b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NSBLib.EventChannelSystem.FloatEventListener
+  eventChannel: {fileID: 11400000, guid: 32c957c12476fa541a12b2af0e94159c, type: 2}
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 203968499}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: UpdateTime
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2645,6 +2675,8 @@ GameObject:
   - component: {fileID: 831557823}
   - component: {fileID: 831557824}
   - component: {fileID: 831557825}
+  - component: {fileID: 831557826}
+  - component: {fileID: 831557827}
   m_Layer: 0
   m_Name: CardManager
   m_TagString: Untagged
@@ -2679,13 +2711,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df29ba1915061ec4d954445a3b63b0ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CardManager
+  originalScale: {x: 0, y: 0, z: 0}
   buyTable: {fileID: 71383491}
   sellTable: {fileID: 2018895582}
   customerTable: {fileID: 1413740613}
   cardTemplate: {fileID: 5464842398875346496, guid: 7b82be3d2380ae54293a763b24e88378, type: 3}
-  cardsToBuySize: 3
   cardsToBuy: []
-  cardsToSellSize: 10
   cardsToSell: []
   cardInventory: []
 --- !u!114 &831557825
@@ -2707,6 +2738,62 @@ MonoBehaviour:
       - m_Target: {fileID: 831557824}
         m_TargetAssemblyTypeName: Managers.CardManager, Assembly-CSharp
         m_MethodName: AddToInventory
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &831557826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831557822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bde629b3a074cb19fc47c1e6dd74058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventChannels.CardEventListener
+  eventChannel: {fileID: 11400000, guid: ae431061fdc4ed24685912f9972e963e, type: 2}
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 831557824}
+        m_TargetAssemblyTypeName: Managers.CardManager, Assembly-CSharp
+        m_MethodName: SellCard
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &831557827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831557822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bde629b3a074cb19fc47c1e6dd74058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventChannels.CardEventListener
+  eventChannel: {fileID: 11400000, guid: 383fde8ae4816fa4a94feaa19c74b90f, type: 2}
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 831557824}
+        m_TargetAssemblyTypeName: Managers.CardManager, Assembly-CSharp
+        m_MethodName: RejectCard
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4295,7 +4382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Table
   cards: []
-  scaleCard: 1
+  scaleCard: 2
   prefab: {fileID: 0}
   slotGroup: {fileID: 719536893}
   hasGuide: 0
@@ -6036,9 +6123,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5151d7d7bea5fc4499ebaa9f43124c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  duration: 60
+  currentTime: 0
   cash: 1000
   updateCash: {fileID: 11400000, guid: 5e19bbc2d3fb3914cbac3d33bb7c6bb5, type: 2}
   addToInventory: {fileID: 11400000, guid: 5ae5c7a86aa40434fbaecdb65c90604c, type: 2}
+  sellCard: {fileID: 11400000, guid: ae431061fdc4ed24685912f9972e963e, type: 2}
+  updateTime: {fileID: 11400000, guid: 32c957c12476fa541a12b2af0e94159c, type: 2}
 --- !u!4 &1923095348
 Transform:
   m_ObjectHideFlags: 0
@@ -6652,6 +6743,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1629943812}
+  - {fileID: 2128129070}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6750,6 +6842,81 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &2128129069
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2128129070}
+  - component: {fileID: 2128129072}
+  - component: {fileID: 2128129071}
+  m_Layer: 5
+  m_Name: TimerProgressBar
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2128129070
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128129069}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2021785912}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 265}
+  m_SizeDelta: {x: 800, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2128129071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128129069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.31622273, g: 0.8773585, b: 0.23589355, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 463484693647128341, guid: 4220a60091fd06149a9bf557e15abd7f, type: 3}
+  m_Type: 3
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 0
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &2128129072
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128129069}
+  m_CullTransparentMesh: 1
 --- !u!1001 &748460187337119387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6822,6 +6989,10 @@ PrefabInstance:
     - target: {fileID: 3239685243542658447, guid: 7b82be3d2380ae54293a763b24e88378, type: 3}
       propertyPath: m_Name
       value: Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 3239685243542658447, guid: 7b82be3d2380ae54293a763b24e88378, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7030256234459039982, guid: 7b82be3d2380ae54293a763b24e88378, type: 3}
       propertyPath: m_Camera

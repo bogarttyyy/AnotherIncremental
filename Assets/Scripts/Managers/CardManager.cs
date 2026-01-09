@@ -11,11 +11,13 @@ namespace Managers
     public class CardManager : MonoBehaviour
     {
         public static CardManager Instance { get; private set; }
+        [SerializeField] Vector3 originalScale;
         [SerializeField] private Table buyTable;
         private List<Transform> buySlots;
         [SerializeField] private Table sellTable;
         [SerializeField] private Table customerTable;
         private List<Transform> sellSlots;
+
 
         [SerializeField] private Card cardTemplate;
         [SerializeField] private List<Card> cardsToBuy;
@@ -127,8 +129,9 @@ namespace Managers
                     buyCoroutine ??= StartCoroutine(GenerateBuyCards());
                     break;
                 case EBuySell.Sell:
-                    // sellTable.RemoveCard(card);
-                    // sellCoroutine ??= StartCoroutine(GenerateCustomers());
+                    customerTable.RemoveCard(card);
+                    sellTable.InsertToNextEmptySlot(card);
+                    sellCoroutine ??= StartCoroutine(GenerateCustomers());
                     break;
             }
         }
