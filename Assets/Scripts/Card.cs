@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
-public class Card : MonoBehaviour, IClickable
+public class Card : MonoBehaviour, IClickable, IRightClickable
 {
     public int marketPrice;
     public int askingPrice;
