@@ -1,15 +1,25 @@
 using System;
 using Enums;
+using EventChannels;
 using NSBLib.Enums;
+using NSBLib.Helpers;
+using NSBLib.Interfaces;
 using ScriptableObjects;
+using TMPro;
 using UnityEngine;
 
-public class Card : MonoBehaviour
+[RequireComponent(typeof(Collider2D))]
+public class Card : MonoBehaviour, IClickable
 {
-    [SerializeField] float marketPrice;
-    [SerializeField] float askingPrice;
+    public int marketPrice;
+    public int askingPrice;
     [SerializeField] ECardRarity rarity;
     [SerializeField] EBuySell buySell;
+
+    [SerializeField] private TMP_Text marketPriceText;
+    [SerializeField] private TMP_Text askingPriceText;
+
+    [SerializeField] private CardEventChannel SelectCard;
     
     SpriteRenderer spriteRenderer;
 
@@ -22,9 +32,9 @@ public class Card : MonoBehaviour
     {
         spriteRenderer.color = cardRarity switch
         {
-            ECardRarity.Uncommon => new Color32(0, 255, 0, 255),
-            ECardRarity.Rare => new Color32(0, 0, 255, 255),
-            ECardRarity.Common => new Color32(255, 255, 255, 255),
+            ECardRarity.Uncommon => new Color32(0, 128, 0, 255),
+            ECardRarity.Rare => new Color32(0, 0, 128, 255),
+            ECardRarity.Common => new Color32(128, 128, 128, 255),
             _ => spriteRenderer.color
         };
         rarity = cardRarity;
@@ -37,11 +47,29 @@ public class Card : MonoBehaviour
         askingPrice = card.price;
     }
 
-    public void SetupCard(ECardRarity newRarity, float newMarketPrice, float newAskingPrice, EBuySell newBuySell)
+    public void SetupCard(ECardRarity newRarity, int newMarketPrice, int newAskingPrice, EBuySell newBuySell)
     {
         SetRarity(newRarity);
-        marketPrice = newMarketPrice;
-        askingPrice = newAskingPrice;
+        SetMarketPriceText(newMarketPrice);
+        SetAskingPriceText(newAskingPrice);
         buySell = newBuySell;
+    }
+
+    public void SetAskingPriceText(int newAskingPrice)
+    {
+        askingPrice = newAskingPrice;
+        askingPriceText.text = $"Asking\n${newAskingPrice}";
+    }
+
+    public void SetMarketPriceText(int newMarketPrice)
+    {
+        marketPrice = newMarketPrice;
+        marketPriceText.text = $"Market\n${newMarketPrice}";
+    }
+
+    public void OnClicked()
+    {
+        NSBLogger.Log($"Clicked card {this.name}");
+        SelectCard?.Invoke(this);
     }
 }

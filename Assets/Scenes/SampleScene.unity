@@ -3920,7 +3920,7 @@ Transform:
   m_GameObject: {fileID: 1599292577}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.3, z: 0}
+  m_LocalPosition: {x: 0, y: 0.33, z: 0}
   m_LocalScale: {x: 0.08, y: 0.028571423, z: 0.19999999}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -4897,7 +4897,7 @@ Transform:
   m_GameObject: {fileID: 1905877476}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.3, z: 0}
+  m_LocalPosition: {x: 0, y: -0.33, z: 0}
   m_LocalScale: {x: 0.08, y: 0.028571423, z: 0.19999999}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -5687,6 +5687,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Card
       objectReference: {fileID: 0}
+    - target: {fileID: 7030256234459039982, guid: 7b82be3d2380ae54293a763b24e88378, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 519420031}
     - target: {fileID: 7547405990976963006, guid: 7b82be3d2380ae54293a763b24e88378, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -5,8 +5,8 @@ namespace ScriptableObjects
 {
     public class CardSO : ScriptableObject
     {
-        public float marketPrice;
-        public float price;
+        public int marketPrice;
+        public int price;
         public ECardRarity rarity;
     }
 }

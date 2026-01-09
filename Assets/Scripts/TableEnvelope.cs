@@ -3,6 +3,7 @@ using NSBLib.Helpers;
 using NSBLib.Interfaces;
 using UnityEngine;
 
+[RequireComponent(typeof(Collider2D))]
 public class TableEnvelope : MonoBehaviour, IClickable
 {
     [SerializeField] private Sprite open;
