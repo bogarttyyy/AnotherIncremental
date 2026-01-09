@@ -162,12 +162,17 @@ namespace NSBLib.Managers
                 if (Physics.Raycast(ray, out var hit3D, maxDistance, clickableLayers))
                 {
                     //NSBLogger.Log($"Hit3D: {hit3D.collider.gameObject.name}");
-                
-                    var clickable = hit3D.collider.GetComponentInParent<IClickable>();
+
                     if (mouse.rightButton.wasReleasedThisFrame)
-                        clickable?.OnRightClicked();
+                    {
+                        var rightClickable = hit3D.collider.GetComponentInParent<IRightClickable>();
+                        rightClickable?.OnRightClicked();
+                    }
                     else
+                    {
+                        var clickable = hit3D.collider.GetComponentInParent<IClickable>();
                         clickable?.OnClicked();
+                    }
                     return;
                 }
             
@@ -175,11 +180,16 @@ namespace NSBLib.Managers
                 if (hit2D.collider != null)
                 {
                     // NSBLogger.Log($"Hit2D: {hit2D.collider.gameObject.name}");
-                    var clickable = hit2D.collider.GetComponentInParent<IClickable>();
                     if (mouse.rightButton.wasReleasedThisFrame)
-                        clickable?.OnRightClicked();
+                    {
+                        var rightClickable = hit2D.collider.GetComponentInParent<IRightClickable>();
+                        rightClickable?.OnRightClicked();
+                    }
                     else
+                    {
+                        var clickable = hit2D.collider.GetComponentInParent<IClickable>();
                         clickable?.OnClicked();
+                    }
                 }
                 else
                 {
