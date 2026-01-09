@@ -57,10 +57,27 @@ public class Card : MonoBehaviour, IClickable, IRightClickable
         SetBuySell(newBuySell);
     }
 
-    public void SetAskingPrice(int newAskingPrice)
+    public void SetAskingPrice(int newAskingPrice, bool isSelling = false)
     {
         askingPrice = newAskingPrice;
         askingPriceText.text = $"A ${newAskingPrice}";
+        // Not working
+        // if (isSelling)
+        // {
+        //     if (askingPrice > boughtPrice)
+        //     {
+        //         askingPriceText.color = new Color32(0, 255, 0, 255);
+        //     }
+        //     else if (askingPrice < boughtPrice)
+        //     {
+        //         askingPriceText.faceColor = new Color32(255,0, 0, 255);
+        //     }
+        //     else
+        //     {
+        //         askingPriceText.faceColor = new Color32(255, 255, 0, 255);
+        //     }
+        // }
+        
         askingPriceText.gameObject.SetActive(askingPrice > 0);
     }
 
