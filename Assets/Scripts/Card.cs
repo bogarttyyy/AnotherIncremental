@@ -1,12 +1,15 @@
 using System;
 using Enums;
+using NSBLib.Enums;
+using ScriptableObjects;
 using UnityEngine;
 
 public class Card : MonoBehaviour
 {
     [SerializeField] float marketPrice;
-    [SerializeField] float price;
+    [SerializeField] float askingPrice;
     [SerializeField] ECardRarity rarity;
+    [SerializeField] EBuySell buySell;
     
     SpriteRenderer spriteRenderer;
 
@@ -25,5 +28,20 @@ public class Card : MonoBehaviour
             _ => spriteRenderer.color
         };
         rarity = cardRarity;
+    }
+
+    public void SetupCard(CardSO card)
+    {
+        SetRarity(card.rarity);
+        marketPrice = card.marketPrice;
+        askingPrice = card.price;
+    }
+
+    public void SetupCard(ECardRarity newRarity, float newMarketPrice, float newAskingPrice, EBuySell newBuySell)
+    {
+        SetRarity(newRarity);
+        marketPrice = newMarketPrice;
+        askingPrice = newAskingPrice;
+        buySell = newBuySell;
     }
 }

@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class Table : MonoBehaviour
 {
-    [SerializeField] TableEnvelope[] envelopes;
-    [SerializeField] private TableEnvelope prefab;
+    [SerializeField] GameObject[] objs;
+    [SerializeField] private GameObject prefab;
     [SerializeField] private Transform slotGroup;
     [SerializeField] private bool hasGuide;
     private List<Transform> slotList;
@@ -16,7 +16,7 @@ public class Table : MonoBehaviour
     private void OnEnable()
     {
         SetupSlots();
-        envelopes = new TableEnvelope[slotList.Count];
+        objs = new GameObject[slotList.Count];
     }
 
     private void SetupSlots()
@@ -47,19 +47,24 @@ public class Table : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        StartCoroutine(SpawnTableEnvelopes());
+        // StartCoroutine(SpawnTableEnvelopes());
     }
 
     IEnumerator SpawnTableEnvelopes()
     {
-        for (int i = 0; i < envelopes.Length; i++)
+        for (int i = 0; i < objs.Length; i++)
         {
             yield return new WaitForSeconds(0.1f);
             var newEnv =  Instantiate(prefab, slotList[i], true);
             newEnv.transform.position = new  Vector3(slotList[i].transform.position.x, slotList[i].transform.position.y, slotList[i].transform.position.z -1);
             
-            envelopes[i] = newEnv;
+            objs[i] = newEnv;
         }
+    }
+
+    public List<Transform> GetSlotList()
+    {
+        return slotList;
     }
 
     // Update is called once per frame
