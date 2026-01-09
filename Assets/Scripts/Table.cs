@@ -7,8 +7,9 @@ using UnityEngine;
 
 public class Table : MonoBehaviour
 {
-    [SerializeField] GameObject[] objs;
-    [SerializeField] private GameObject prefab;
+    [SerializeField] List<Card> cards;
+    [SerializeField] private float scaleCard = 1f;
+    [SerializeField] private Card prefab;
     [SerializeField] private Transform slotGroup;
     [SerializeField] private bool hasGuide;
     private List<Transform> slotList;
@@ -16,7 +17,11 @@ public class Table : MonoBehaviour
     private void OnEnable()
     {
         SetupSlots();
-        objs = new GameObject[slotList.Count];
+        cards = new List<Card>();
+        foreach (var slot in slotList)
+        {
+            cards.Add(null);
+        }
     }
 
     private void SetupSlots()
@@ -52,13 +57,13 @@ public class Table : MonoBehaviour
 
     IEnumerator SpawnTableEnvelopes()
     {
-        for (int i = 0; i < objs.Length; i++)
+        for (int i = 0; i < cards.Count; i++)
         {
             yield return new WaitForSeconds(0.1f);
             var newEnv =  Instantiate(prefab, slotList[i], true);
             newEnv.transform.position = new  Vector3(slotList[i].transform.position.x, slotList[i].transform.position.y, slotList[i].transform.position.z -1);
             
-            objs[i] = newEnv;
+            cards[i] = newEnv;
         }
     }
 
@@ -67,9 +72,34 @@ public class Table : MonoBehaviour
         return slotList;
     }
 
-    // Update is called once per frame
-    void Update()
+    public List<Card> GetCards()
     {
+        return cards;
+    }
+    
+    public void InsertToNextEmptySlot(Card card)
+    {
+        if (!card.gameObject.activeSelf)
+        {
+            card.gameObject.SetActive(true);
+        }
         
+        var emptySlotIndex = cards.FindIndex(t => !t);
+        
+        card.tableIndex = emptySlotIndex;
+        card.transform.SetParent(slotList[emptySlotIndex]);
+        card.transform.localScale *= scaleCard;
+        card.transform.position = new  Vector3(slotList[emptySlotIndex].transform.position.x, slotList[emptySlotIndex].transform.position.y, slotList[emptySlotIndex].transform.position.z -1);
+        cards[emptySlotIndex] = card;
+    }
+
+    public void RemoveCard(Card card)
+    {
+        NSBLogger.Log($"card index: {card.tableIndex}");
+        if (card.tableIndex.HasValue)
+        {
+            cards[card.tableIndex.Value] = null;
+            card.gameObject.SetActive(false);
+        }
     }
 }

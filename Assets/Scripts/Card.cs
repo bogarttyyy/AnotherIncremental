@@ -13,8 +13,9 @@ public class Card : MonoBehaviour, IClickable
 {
     public int marketPrice;
     public int askingPrice;
-    [SerializeField] ECardRarity rarity;
-    [SerializeField] EBuySell buySell;
+    public ECardRarity rarity;
+    public EBuySell buySell;
+    public int? tableIndex;
 
     [SerializeField] private TMP_Text marketPriceText;
     [SerializeField] private TMP_Text askingPriceText;
@@ -69,7 +70,17 @@ public class Card : MonoBehaviour, IClickable
 
     public void OnClicked()
     {
-        NSBLogger.Log($"Clicked card {this.name}");
+        // NSBLogger.Log($"Clicked card {this.name}");
         SelectCard?.Invoke(this);
+    }
+
+    public bool IsBuy()
+    {
+        return buySell == EBuySell.Buy;
+    }
+
+    public bool IsSell()
+    {
+        return buySell == EBuySell.Sell;
     }
 }

@@ -22,6 +22,8 @@ namespace Managers
         [SerializeField] private int cardsToSellSize = 10;
         [SerializeField] private List<Card> cardsToSell;
         [SerializeField] private List<Card> cardInventory = new();
+        
+        private Coroutine buyCoroutine;
     
         private void Awake()
         {
@@ -38,17 +40,19 @@ namespace Managers
         private void Start()
         {
             InitializeBuySellList();
-            StartCoroutine(GenerateBuyCards());
+            buyCoroutine = StartCoroutine(GenerateBuyCards());
         }
 
         IEnumerator GenerateBuyCards()
         {
-            while (cardsToBuy.Any(t => !t))
+            while (buyTable.GetCards().Any(t => !t))
             {
                 yield return new WaitForSeconds(1f);
                 var newCard = CreateBuyCard((ECardRarity)Random.Range(0, 4));
-                InsertToSlot(newCard);
+                buyTable.InsertToNextEmptySlot(newCard);
             }
+
+            buyCoroutine = null;
         }
 
         public Card CreateBuyCard(ECardRarity rarity)
@@ -57,15 +61,6 @@ namespace Managers
             var marketPrice = RandomizeMarketPrice(rarity);
             newCard.SetupCard(rarity, marketPrice, marketPrice,EBuySell.Buy);
             return newCard;
-        }
-
-        private void InsertToSlot(Card card)
-        {
-            var emptySlotIndex = cardsToBuy.FindIndex(t => !t);
-        
-            card.transform.SetParent(buySlots[emptySlotIndex]);
-            card.transform.position = new  Vector3(buySlots[emptySlotIndex].transform.position.x, buySlots[emptySlotIndex].transform.position.y, buySlots[emptySlotIndex].transform.position.z -1);
-            cardsToBuy[emptySlotIndex] = card;
         }
 
         private int RandomizeMarketPrice(ECardRarity rarity)
@@ -81,24 +76,6 @@ namespace Managers
 
         private void InitializeBuySellList()
         {
-            cardsToBuy ??= new();
-            if (cardsToBuySize > 0)
-            {
-                for (int i = 0; i < cardsToBuySize; i++)
-                {
-                    cardsToBuy.Add(null);
-                }
-            }
-        
-            cardsToSell ??= new();
-            if (cardsToSellSize > 0)
-            {
-                for (int i = 0; i < cardsToSellSize; i++)
-                {
-                    cardsToSell.Add(null);
-                }
-            }
-        
             if (buyTable != null)
                 buySlots = buyTable.GetSlotList();
             else
@@ -110,9 +87,12 @@ namespace Managers
                 NSBLogger.Log("Sell slots not found");
         }
 
-        public void OnClickedCard(Card card)
+        public void AddToInventory(Card card)
         {
-            NSBLogger.Log($"Card market value: {card.marketPrice}");
+            buyTable.RemoveCard(card);
+            sellTable.InsertToNextEmptySlot(card);
+            
+            buyCoroutine ??= StartCoroutine(GenerateBuyCards());
         }
     }
 }
