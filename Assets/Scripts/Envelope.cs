@@ -4,8 +4,6 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Enums;
-using NSBLib.Helpers;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class Envelope : MonoBehaviour
