@@ -12,9 +12,9 @@ namespace Managers
     {
         public static CardManager Instance { get; private set; }
         [SerializeField] Vector3 originalScale;
-        [SerializeField] private Table buyTable;
+        public Table buyTable;
         private List<Transform> buySlots;
-        [SerializeField] private Table sellTable;
+        public Table sellTable;
         [SerializeField] private Table customerTable;
         private List<Transform> sellSlots;
 
@@ -36,7 +36,6 @@ namespace Managers
             }
 
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
 
         private void Start()
@@ -48,28 +47,34 @@ namespace Managers
 
         IEnumerator GenerateBuyCards()
         {
-            while (buyTable.GetCards().Any(t => !t))
+            if (buyTable != null)
             {
-                yield return new WaitForSeconds(1f);
-                var newCard = CreateBuyCard((ECardRarity)Random.Range(0, 4));
-                buyTable.InsertToNextEmptySlot(newCard);
-            }
+                while (buyTable.GetCards().Any(t => !t))
+                {
+                    yield return new WaitForSeconds(1f);
+                    var newCard = CreateBuyCard((ECardRarity)Random.Range(0, 4));
+                    buyTable.InsertToNextEmptySlot(newCard);
+                }
 
-            buyCoroutine = null;
+                buyCoroutine = null;
+            }
         }
 
         IEnumerator GenerateCustomers()
         {
-            while (sellTable.GetCards().Any(t => t) && customerTable.GetCards().Any(t => !t))
+            if (sellTable != null)
             {
-                yield return new WaitForSeconds(2f);
-                var card = sellTable.PickRandomCard();
-                card.buySell = EBuySell.Sell;
-                card.SetAskingPrice(Mathf.RoundToInt((Random.Range(70, 100 + 1) / 100f) * card.marketPrice));
-                customerTable.InsertToNextEmptySlot(card);
-            }
+                while (sellTable.GetCards().Any(t => t) && customerTable.GetCards().Any(t => !t))
+                {
+                    yield return new WaitForSeconds(2f);
+                    var card = sellTable.PickRandomCard();
+                    card.buySell = EBuySell.Sell;
+                    card.SetAskingPrice(Mathf.RoundToInt((Random.Range(70, 100 + 1) / 100f) * card.marketPrice));
+                    customerTable.InsertToNextEmptySlot(card);
+                }
 
-            sellCoroutine = null;
+                sellCoroutine = null;
+            }
         }
 
         public Card CreateBuyCard(ECardRarity rarity)

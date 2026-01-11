@@ -1,8 +1,11 @@
+using System;
 using Enums;
 using EventChannels;
 using NSBLib.EventChannelSystem;
 using NSBLib.Helpers;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -38,6 +41,22 @@ public class GameManager : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateTimer();
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        cash = 1000;
+        currentTime = duration;
     }
 
     public void OnCardClicked(Card card)
@@ -101,6 +120,15 @@ public class GameManager : MonoBehaviour
                 updateTime?.Invoke(0f);
                 // Trigger Game Over or Time Up logic here
             }
+        }
+    }
+
+    public void OnReset(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            // NSBLogger.Log("Reset");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

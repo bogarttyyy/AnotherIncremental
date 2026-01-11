@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        // DontDestroyOnLoad(gameObject);
     }
 
     public void UpdateCashText(int cash)
@@ -28,6 +28,9 @@ public class UIManager : MonoBehaviour
 
     public void UpdateTime(float time)
     {
-        timeProgressBar.fillAmount = time;
+        if (timeProgressBar != null)
+        {
+            timeProgressBar.fillAmount = time;
+        }
     }
 }
