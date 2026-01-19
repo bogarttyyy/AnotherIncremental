@@ -81,6 +81,7 @@ public class Table : MonoBehaviour
     {
         if (!card.gameObject.activeSelf)
         {
+            card.HasStarted(false);
             card.gameObject.SetActive(true);
         }
         

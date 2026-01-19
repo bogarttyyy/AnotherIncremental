@@ -1,9 +1,11 @@
+using System;
 using Enums;
 using EventChannels;
 using NSBLib.Interfaces;
 using ScriptableObjects;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Collider2D))]
 public class Card : MonoBehaviour, IClickable, IRightClickable
@@ -14,6 +16,13 @@ public class Card : MonoBehaviour, IClickable, IRightClickable
     public ECardRarity rarity;
     public EBuySell buySell;
     public int? tableIndex;
+    
+    
+    [SerializeField] private float currentTime;
+    [SerializeField] private float duration = 60f;
+    [SerializeField] float percentTimeLeft = 0f;
+    [SerializeField] private bool hasStarted = false;
+    [SerializeField] private Image cardTimer;
 
     [SerializeField] private TMP_Text marketPriceText;
     [SerializeField] private TMP_Text askingPriceText;
@@ -27,6 +36,14 @@ public class Card : MonoBehaviour, IClickable, IRightClickable
     private void OnEnable()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        currentTime = duration;
+        hasStarted = true;
+    }
+
+    private void FixedUpdate()
+    {
+        if (hasStarted)
+            UpdateTimer();
     }
 
     public void SetRarity(ECardRarity cardRarity)
@@ -48,13 +65,14 @@ public class Card : MonoBehaviour, IClickable, IRightClickable
         askingPrice = card.price;
     }
 
-    public void SetupCard(ECardRarity newRarity, int newMarketPrice, int newAskingPrice, EBuySell newBuySell, int newBoughtPrice = 0)
+    public void SetupCard(ECardRarity newRarity, int newMarketPrice, int newAskingPrice, EBuySell newBuySell, float newDuration = 2f, int newBoughtPrice = 0)
     {
         SetRarity(newRarity);
         SetMarketPrice(newMarketPrice);
         SetAskingPrice(newAskingPrice);
         SetBoughtPrice(newBoughtPrice);
         SetBuySell(newBuySell);
+        SetDuration(newDuration);
     }
 
     public void SetAskingPrice(int newAskingPrice, bool isSelling = false)
@@ -118,5 +136,33 @@ public class Card : MonoBehaviour, IClickable, IRightClickable
     public void SetBuySell(EBuySell newBuySell)
     {
         buySell = newBuySell;
+    }
+
+    public void SetDuration(float newDuration)
+    {
+        duration = newDuration;
+    }
+
+    public void HasStarted(bool start)
+    {
+        hasStarted = start;
+    }
+    
+    private void UpdateTimer()
+    {
+        
+        if (currentTime > 0)
+        {
+            currentTime -= Time.deltaTime;
+            percentTimeLeft = currentTime / duration;
+            cardTimer.fillAmount = percentTimeLeft;
+
+            if (currentTime <= 0)
+            {
+                currentTime = 0;
+                // Call something, cancel card maybe?
+                RejectCard?.Invoke(this);
+            }
+        }
     }
 }
