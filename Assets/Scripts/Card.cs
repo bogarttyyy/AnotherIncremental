@@ -42,8 +42,8 @@ public class Card : MonoBehaviour, IClickable, IRightClickable
 
     private void FixedUpdate()
     {
-        if (hasStarted)
-            UpdateTimer();
+        // if (hasStarted)
+        //     UpdateTimer();
     }
 
     public void SetRarity(ECardRarity cardRarity)
@@ -148,21 +148,21 @@ public class Card : MonoBehaviour, IClickable, IRightClickable
         hasStarted = start;
     }
     
-    private void UpdateTimer()
-    {
-        
-        if (currentTime > 0)
-        {
-            currentTime -= Time.deltaTime;
-            percentTimeLeft = currentTime / duration;
-            cardTimer.fillAmount = percentTimeLeft;
-
-            if (currentTime <= 0)
-            {
-                currentTime = 0;
-                // Call something, cancel card maybe?
-                RejectCard?.Invoke(this);
-            }
-        }
-    }
+    // private void UpdateTimer()
+    // {
+    //     
+    //     if (currentTime > 0)
+    //     {
+    //         currentTime -= Time.deltaTime;
+    //         percentTimeLeft = currentTime / duration;
+    //         cardTimer.fillAmount = percentTimeLeft;
+    //
+    //         if (currentTime <= 0)
+    //         {
+    //             currentTime = 0;
+    //             // Call something, cancel card maybe?
+    //             RejectCard?.Invoke(this);
+    //         }
+    //     }
+    // }
 }

@@ -1,12 +1,10 @@
 ﻿using NSBLib.EventChannelSystem;
-using NSBLib.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace NSBLib.Components
 {
-    [RequireComponent(typeof(Collider2D))]
-    public class ClickableWithCooldown: MonoBehaviour, IClickable
+    public class CountTimer : MonoBehaviour
     {
         [SerializeField] private float timer;
         [SerializeField] private float duration = 5f;
@@ -39,21 +37,6 @@ namespace NSBLib.Components
                     cooldownDone = false;
                 }
             }
-        }
-
-        public void OnClicked()
-        {
-            if (cooldownDone)
-            {
-                SetCooldown();
-                OnClick?.Invoke();
-            }
-        }
-    
-        private void SetCooldown()
-        {
-            cooldownDone = false;
-            timer = duration;
         }
     }
 }

@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     [SerializeField] private TMP_Text cashText;
+    [SerializeField] private TMP_Text dayText;
     [SerializeField] private Image timeProgressBar;
 
     private void Awake()
@@ -32,5 +33,10 @@ public class UIManager : MonoBehaviour
         {
             timeProgressBar.fillAmount = time;
         }
+    }
+
+    public void UpdateDay(int day)
+    {
+        dayText.text = $"Day {day}";
     }
 }

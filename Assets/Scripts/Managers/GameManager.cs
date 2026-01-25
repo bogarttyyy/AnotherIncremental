@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    [SerializeField] private int dayNumber = 1;
     [SerializeField] private float duration = 60f;
     [SerializeField] private float currentTime;
     [SerializeField] private int cash;
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CardEventChannel addToInventory;
     [SerializeField] private CardEventChannel sellCard;
     [SerializeField] private FloatEventChannel updateTime;
+    [SerializeField] private IntEventChannel updateDay;
     
     private void Awake()
     {
@@ -56,7 +58,7 @@ public class GameManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         cash = 1000;
-        currentTime = duration;
+        ResetTime();
     }
 
     public void OnCardClicked(Card card)
@@ -118,9 +120,21 @@ public class GameManager : MonoBehaviour
             {
                 currentTime = 0;
                 updateTime?.Invoke(0f);
-                // Trigger Game Over or Time Up logic here
+                UpdateDayNumber();
             }
         }
+    }
+
+    private void UpdateDayNumber()
+    {
+        dayNumber +=1;
+        updateDay?.Invoke(dayNumber);
+        ResetTime();
+    }
+
+    private void ResetTime()
+    {
+        currentTime = duration;
     }
 
     public void OnReset(InputAction.CallbackContext context)
