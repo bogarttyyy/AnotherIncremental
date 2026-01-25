@@ -82,7 +82,8 @@ namespace Managers
             var newCard = Instantiate(cardTemplate);
             var marketPrice = RandomizeMarketPrice(rarity);
             var askingPrice = Mathf.RoundToInt((Random.Range(60, 85 + 1) / 100f) * marketPrice);
-            newCard.SetupCard(rarity, marketPrice, askingPrice, EBuySell.Buy, Random.Range(1, 4));
+            var demandValue = Random.Range(1, 101);
+            newCard.SetupCard(rarity, marketPrice, askingPrice, EBuySell.Buy, demandValue, Random.Range(1, 4));
             return newCard;
         }
 

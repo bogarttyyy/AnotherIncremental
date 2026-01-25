@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Enums;
 using EventChannels;
 using NSBLib.Interfaces;
@@ -14,6 +15,9 @@ public class Card : MonoBehaviour, IClickable, IRightClickable
     public int askingPrice;
     public int boughtPrice;
     public ECardRarity rarity;
+    public EDemand demand;
+    public int demandValue;
+    
     public EBuySell buySell;
     public int? tableIndex;
     
@@ -30,8 +34,13 @@ public class Card : MonoBehaviour, IClickable, IRightClickable
 
     [SerializeField] private CardEventChannel SelectCard;
     [SerializeField] private CardEventChannel RejectCard;
+
+    [SerializeField] private SpriteRenderer demandSpriteRenderer;
+    [SerializeField] private Sprite lowDemandSprite;
+    [SerializeField] private Sprite highDemandSprite;
+    [SerializeField] private Sprite normalDemanSprite;
     
-    SpriteRenderer spriteRenderer;
+    private SpriteRenderer spriteRenderer;
 
     private void OnEnable()
     {
@@ -65,7 +74,7 @@ public class Card : MonoBehaviour, IClickable, IRightClickable
         askingPrice = card.price;
     }
 
-    public void SetupCard(ECardRarity newRarity, int newMarketPrice, int newAskingPrice, EBuySell newBuySell, float newDuration = 2f, int newBoughtPrice = 0)
+    public void SetupCard(ECardRarity newRarity, int newMarketPrice, int newAskingPrice, EBuySell newBuySell, int demandVal = 50, float newDuration = 2f, int newBoughtPrice = 0)
     {
         SetRarity(newRarity);
         SetMarketPrice(newMarketPrice);
@@ -73,6 +82,7 @@ public class Card : MonoBehaviour, IClickable, IRightClickable
         SetBoughtPrice(newBoughtPrice);
         SetBuySell(newBuySell);
         SetDuration(newDuration);
+        SetDemand(demandVal);
     }
 
     public void SetAskingPrice(int newAskingPrice, bool isSelling = false)
@@ -146,6 +156,24 @@ public class Card : MonoBehaviour, IClickable, IRightClickable
     public void HasStarted(bool start)
     {
         hasStarted = start;
+    }
+
+    public void SetDemand(int demandVal)
+    {
+        demandValue = demandVal;
+        demand = demandVal switch
+        {
+            >= 70 => EDemand.High,
+            >= 35 => EDemand.Normal,
+            _ => EDemand.Low
+        };
+
+        demandSpriteRenderer.sprite = demand switch
+        {
+            EDemand.High => highDemandSprite,
+            EDemand.Normal => normalDemanSprite,
+            _ => lowDemandSprite,
+        };
     }
     
     // private void UpdateTimer()
