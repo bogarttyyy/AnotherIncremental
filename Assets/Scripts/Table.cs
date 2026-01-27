@@ -116,4 +116,14 @@ public class Table : MonoBehaviour
             
         return pickedCard;
     }
+    
+    public bool HasCards()
+    {
+        return GetCards().Any(t => t);
+    }
+
+    public bool HasEmptySpace()
+    {
+        return GetCards().Any(t => !t);
+    }
 }

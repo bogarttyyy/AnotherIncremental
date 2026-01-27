@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Enums;
+using NSBLib.EventChannelSystem;
 using NSBLib.Helpers;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -17,9 +18,10 @@ namespace Managers
         public Table sellTable;
         [SerializeField] private Table customerTable;
         private List<Transform> sellSlots;
-
-
+        
         [SerializeField] private Card cardTemplate;
+        [SerializeField] private EventChannel cardAddedToSellTable;
+        
         [SerializeField] private List<Card> cardsToBuy;
         [SerializeField] private List<Card> cardsToSell;
         [SerializeField] private List<Card> cardInventory = new();
@@ -27,6 +29,7 @@ namespace Managers
         private Coroutine buyCoroutine;
         private Coroutine sellCoroutine;
 
+        
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -42,7 +45,7 @@ namespace Managers
         {
             InitializeBuySellList();
             buyCoroutine = StartCoroutine(GenerateBuyCards());
-            sellCoroutine = StartCoroutine(GenerateCustomers());
+            // sellCoroutine = StartCoroutine(GenerateCustomers());
         }
 
         IEnumerator GenerateBuyCards()
@@ -60,22 +63,22 @@ namespace Managers
             }
         }
 
-        IEnumerator GenerateCustomers()
-        {
-            if (sellTable != null)
-            {
-                while (sellTable.GetCards().Any(t => t) && customerTable.GetCards().Any(t => !t))
-                {
-                    yield return new WaitForSeconds(2f);
-                    var card = sellTable.PickRandomCard();
-                    card.buySell = EBuySell.Sell;
-                    card.SetAskingPrice(Mathf.RoundToInt((Random.Range(70, 100 + 1) / 100f) * card.marketPrice));
-                    customerTable.InsertToNextEmptySlot(card);
-                }
-
-                sellCoroutine = null;
-            }
-        }
+        // IEnumerator GenerateCustomers()
+        // {
+        //     if (sellTable != null)
+        //     {
+        //         while (sellTable.GetCards().Any(t => t) && customerTable.GetCards().Any(t => !t))
+        //         {
+        //             yield return new WaitForSeconds(2f);
+        //             var card = sellTable.PickRandomCard();
+        //             card.buySell = EBuySell.Sell;
+        //             card.SetAskingPrice(Mathf.RoundToInt((Random.Range(70, 100 + 1) / 100f) * card.marketPrice));
+        //             customerTable.InsertToNextEmptySlot(card);
+        //         }
+        //
+        //         sellCoroutine = null;
+        //     }
+        // }
 
         public Card CreateBuyCard(ECardRarity rarity)
         {
@@ -117,13 +120,14 @@ namespace Managers
             sellTable.InsertToNextEmptySlot(card);
 
             buyCoroutine ??= StartCoroutine(GenerateBuyCards());
-            sellCoroutine ??= StartCoroutine(GenerateCustomers());
+            cardAddedToSellTable?.Invoke(new Empty());
         }
 
         public void SellCard(Card card)
         {
             customerTable.RemoveCard(card);
-            sellCoroutine ??= StartCoroutine(GenerateCustomers());
+            // sellCoroutine ??= StartCoroutine(GenerateCustomers());
+            cardAddedToSellTable?.Invoke(new Empty());
         }
 
         public void RejectCard(Card card)
@@ -137,7 +141,8 @@ namespace Managers
                 case EBuySell.Sell:
                     customerTable.RemoveCard(card);
                     sellTable.InsertToNextEmptySlot(card);
-                    sellCoroutine ??= StartCoroutine(GenerateCustomers());
+                    // sellCoroutine ??= StartCoroutine(GenerateCustomers());
+                    cardAddedToSellTable?.Invoke(new Empty());
                     break;
             }
         }
