@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 71383492}
   - component: {fileID: 71383491}
   m_Layer: 0
-  m_Name: BuyingCards
+  m_Name: BuyingCardsTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2746,6 +2746,7 @@ MonoBehaviour:
   sellTable: {fileID: 2018895582}
   customerTable: {fileID: 1413740613}
   cardTemplate: {fileID: 5464842398875346496, guid: 7b82be3d2380ae54293a763b24e88378, type: 3}
+  cardAddedToSellTable: {fileID: 11400000, guid: 5b7ef1b48f0742442aac0eeb7c7f8b3e, type: 2}
   cardsToBuy: []
   cardsToSell: []
   cardInventory: []
@@ -4089,6 +4090,81 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &1354399282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1354399285}
+  - component: {fileID: 1354399284}
+  - component: {fileID: 1354399283}
+  m_Layer: 0
+  m_Name: CustomerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1354399283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354399282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18871bf798cb43088f7565ca8c7cd9cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NSBLib.EventChannelSystem.EventListener
+  eventChannel: {fileID: 11400000, guid: 5b7ef1b48f0742442aac0eeb7c7f8b3e, type: 2}
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1354399284}
+        m_TargetAssemblyTypeName: CustomerManager, Assembly-CSharp
+        m_MethodName: StartCustomerGeneration
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1354399284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354399282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b1d4cf3e9028764e93bdca21423438d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerManager
+  sellTable: {fileID: 2018895582}
+  customerTable: {fileID: 1413740613}
+--- !u!4 &1354399285
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354399282}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.21676, y: 1.5547, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1360471655
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4393,7 +4469,7 @@ GameObject:
   - component: {fileID: 1413740614}
   - component: {fileID: 1413740613}
   m_Layer: 0
-  m_Name: CustomerCards
+  m_Name: CustomerCardsTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6292,7 +6368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   dayNumber: 1
-  duration: 60
+  duration: 10
   currentTime: 0
   cash: 1000
   updateCash: {fileID: 11400000, guid: 5e19bbc2d3fb3914cbac3d33bb7c6bb5, type: 2}
@@ -6765,7 +6841,7 @@ GameObject:
   - component: {fileID: 2018895580}
   - component: {fileID: 2018895582}
   m_Layer: 0
-  m_Name: SellingCards
+  m_Name: SellingCardsTable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7279,8 +7355,9 @@ SceneRoots:
   - {fileID: 2018895581}
   - {fileID: 1413740614}
   - {fileID: 461117802}
+  - {fileID: 2021785912}
   - {fileID: 831557823}
   - {fileID: 1923095348}
   - {fileID: 1878379563}
   - {fileID: 203968500}
-  - {fileID: 2021785912}
+  - {fileID: 1354399285}
