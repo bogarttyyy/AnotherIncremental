@@ -86,8 +86,8 @@ public class GameManager : MonoBehaviour
 
     private void BuyLogic(Card card)
     {
-        NSBLogger.Log($"Asking for {card.askingPrice}");
-        NSBLogger.Log($"Cash: {cash}");
+        // NSBLogger.Log($"Asking for {card.askingPrice}");
+        // NSBLogger.Log($"Cash: {cash}");
         if (card.askingPrice < cash)
         {
             cash -= card.askingPrice;

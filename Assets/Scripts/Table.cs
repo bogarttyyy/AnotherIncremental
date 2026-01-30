@@ -34,7 +34,7 @@ public class Table : MonoBehaviour
         slotTransforms.RemoveAt(0);
         slotList = slotTransforms;
 
-        NSBLogger.Log($"{slotList.Count}");
+        // NSBLogger.Log($"{slotList.Count}");
     }
 
     private void SetupVisualGuide()
@@ -100,7 +100,7 @@ public class Table : MonoBehaviour
 
     public void RemoveCard(Card card)
     {
-        NSBLogger.Log($"card index: {card.tableIndex}");
+        // NSBLogger.Log($"card index: {card.tableIndex}");
         if (card.tableIndex.HasValue)
         {
             cards[card.tableIndex.Value] = null;

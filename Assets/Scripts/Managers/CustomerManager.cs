@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Enums;
 using UnityEngine;
@@ -26,13 +27,41 @@ public class CustomerManager : MonoBehaviour
         while (sellTable.HasCards() && customerTable.HasEmptySpace())
         {
             yield return new WaitForSeconds(2f);
-            var card = PickRandomCard();
-            card.buySell = EBuySell.Sell;
-            card.SetAskingPrice(Mathf.RoundToInt((Random.Range(70, 100 + 1) / 100f) * card.marketPrice));
-            customerTable.InsertToNextEmptySlot(card);
+            var demand = CustomerDemandValue();
+            Debug.Log($"CDV: {demand}");
+            var card = PickRandomCard(demand);
+
+            if (card != null)
+            {
+                Debug.Log($"Card picked: {card.demandValue}");
+                card.buySell = EBuySell.Sell;
+                card.SetAskingPrice(card.marketPrice);
+                customerTable.InsertToNextEmptySlot(card);
+            }
         }
 
         sellCoroutine = null;
+    }
+
+    private Card PickRandomCard(int dem = 1)
+    {
+        var cards = sellTable.GetCards();
+        var presentCards = cards.Where(t => t is not null);
+
+        var valuedCards = presentCards.Where(f => f.demandValue >= dem).ToList();
+        var rand = Random.Range(0, valuedCards.Count);
+        Debug.Log($"Random sell index: {valuedCards.Count} {rand}");
+
+        if (valuedCards.Count > 0)
+        {
+            var pickedCard = valuedCards[rand]; 
+            
+            sellTable.RemoveCard(pickedCard);
+            
+            return pickedCard;
+        }
+
+        return null;
     }
 
     private Card PickRandomCard(EDemand? dem = null)
@@ -66,6 +95,14 @@ public class CustomerManager : MonoBehaviour
         
         return PickRandomCard(dem);
     }
-    
-    
+
+    private int CustomerDemandValue()
+    {
+        return Random.Range(1, 101);
+    }
+
+    private int RandomMarketPrice(int marketPrice)
+    {
+        return Mathf.RoundToInt((Random.Range(70, 100 + 1) / 100f) * marketPrice);
+    }
 }
