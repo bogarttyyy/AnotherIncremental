@@ -45,7 +45,6 @@ namespace Managers
         {
             InitializeBuySellList();
             buyCoroutine = StartCoroutine(GenerateBuyCards());
-            // sellCoroutine = StartCoroutine(GenerateCustomers());
         }
 
         IEnumerator GenerateBuyCards()
@@ -62,23 +61,6 @@ namespace Managers
                 buyCoroutine = null;
             }
         }
-
-        // IEnumerator GenerateCustomers()
-        // {
-        //     if (sellTable != null)
-        //     {
-        //         while (sellTable.GetCards().Any(t => t) && customerTable.GetCards().Any(t => !t))
-        //         {
-        //             yield return new WaitForSeconds(2f);
-        //             var card = sellTable.PickRandomCard();
-        //             card.buySell = EBuySell.Sell;
-        //             card.SetAskingPrice(Mathf.RoundToInt((Random.Range(70, 100 + 1) / 100f) * card.marketPrice));
-        //             customerTable.InsertToNextEmptySlot(card);
-        //         }
-        //
-        //         sellCoroutine = null;
-        //     }
-        // }
 
         public Card CreateBuyCard(ECardRarity rarity)
         {
@@ -126,7 +108,6 @@ namespace Managers
         public void SellCard(Card card)
         {
             customerTable.RemoveCard(card);
-            // sellCoroutine ??= StartCoroutine(GenerateCustomers());
             cardAddedToSellTable?.Invoke(new Empty());
         }
 
@@ -141,7 +122,6 @@ namespace Managers
                 case EBuySell.Sell:
                     customerTable.RemoveCard(card);
                     sellTable.InsertToNextEmptySlot(card);
-                    // sellCoroutine ??= StartCoroutine(GenerateCustomers());
                     cardAddedToSellTable?.Invoke(new Empty());
                     break;
             }
