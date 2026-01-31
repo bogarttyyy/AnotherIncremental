@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float duration = 60f;
     [SerializeField] private float currentTime;
     [SerializeField] private int cash;
+    [SerializeField] private int rep;
 
     [SerializeField] private IntEventChannel updateCash;
     [SerializeField] private CardEventChannel addToInventory;
@@ -80,7 +81,6 @@ public class GameManager : MonoBehaviour
         cash += card.askingPrice;
         updateCash?.Invoke(cash);
         sellCard?.Invoke(card);
-        
     }
 
     private void BuyLogic(Card card)
@@ -143,5 +143,16 @@ public class GameManager : MonoBehaviour
             // NSBLogger.Log("Reset");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+    }
+    
+    public void AddRep(Card card)
+    {
+        rep += card.rarity switch
+        {
+            ECardRarity.Common => 1,
+            ECardRarity.Uncommon => 2,
+            ECardRarity.Rare => 3,
+            _ => 0
+        };
     }
 }
