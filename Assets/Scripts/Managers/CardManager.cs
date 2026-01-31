@@ -56,7 +56,7 @@ namespace Managers
                 while (buyTable.GetCards().Any(t => !t))
                 {
                     yield return new WaitForSeconds(buyRate);
-                    var newCard = CreateBuyCard((ECardRarity)Random.Range(0, 4));
+                    var newCard = CreateBuyCard((ECardRarity)Random.Range(0, 3));
                     buyTable.InsertToNextEmptySlot(newCard);
                 }
 
