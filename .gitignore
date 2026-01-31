@@ -87,7 +87,7 @@ LightmapSnapshot/
 # =================== #
 
 # Auto-generated Font Assets
-*.asset
+#*.asset
 
 # =================== #
 # Addressables        #
