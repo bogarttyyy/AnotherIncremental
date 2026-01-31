@@ -26,6 +26,8 @@ namespace Managers
         [SerializeField] private List<Card> cardsToSell;
         [SerializeField] private List<Card> cardInventory = new();
 
+        [SerializeField] private float buyRate = 1f;
+
         private Coroutine buyCoroutine;
         private Coroutine sellCoroutine;
 
@@ -53,7 +55,7 @@ namespace Managers
             {
                 while (buyTable.GetCards().Any(t => !t))
                 {
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(buyRate);
                     var newCard = CreateBuyCard((ECardRarity)Random.Range(0, 4));
                     buyTable.InsertToNextEmptySlot(newCard);
                 }

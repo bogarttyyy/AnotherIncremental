@@ -10,6 +10,8 @@ public class CustomerManager : MonoBehaviour
 
     [SerializeField] private Table sellTable;
     [SerializeField] private Table customerTable;
+
+    [SerializeField] private float sellRate = 2f;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,7 +28,7 @@ public class CustomerManager : MonoBehaviour
     {
         while (sellTable.HasCards() && customerTable.HasEmptySpace())
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(sellRate);
             var demand = CustomerDemandValue();
             Debug.Log($"CDV: {demand}");
             var card = PickRandomCard(demand);
