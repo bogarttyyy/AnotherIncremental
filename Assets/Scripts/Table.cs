@@ -13,6 +13,8 @@ public class Table : MonoBehaviour
     [SerializeField] private Transform slotGroup;
     [SerializeField] private bool hasGuide;
     private List<Transform> slotList;
+    
+    private Vector3 defaultCardScale = new(2.5f, 3.5f, 1f);
 
     private void OnEnable()
     {
@@ -93,7 +95,7 @@ public class Table : MonoBehaviour
         }
         
         card.transform.SetParent(slotList[emptySlotIndex]);
-        card.transform.localScale *= scaleCard;
+        card.transform.localScale = defaultCardScale * scaleCard;
         card.transform.position = new  Vector3(slotList[emptySlotIndex].transform.position.x, slotList[emptySlotIndex].transform.position.y, slotList[emptySlotIndex].transform.position.z -1);
         cards[emptySlotIndex] = card;
     }

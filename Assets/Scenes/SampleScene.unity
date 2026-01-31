@@ -241,7 +241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Table
   cards: []
-  scaleCard: 1
+  scaleCard: 2.25
   prefab: {fileID: 0}
   slotGroup: {fileID: 1381104033}
   hasGuide: 0
@@ -4488,7 +4488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Table
   cards: []
-  scaleCard: 2
+  scaleCard: 2.5
   prefab: {fileID: 0}
   slotGroup: {fileID: 719536893}
   hasGuide: 0
@@ -6368,9 +6368,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   dayNumber: 1
-  duration: 10
+  duration: 120
   currentTime: 0
-  cash: 1000
+  cash: 100
   updateCash: {fileID: 11400000, guid: 5e19bbc2d3fb3914cbac3d33bb7c6bb5, type: 2}
   addToInventory: {fileID: 11400000, guid: 5ae5c7a86aa40434fbaecdb65c90604c, type: 2}
   sellCard: {fileID: 11400000, guid: ae431061fdc4ed24685912f9972e963e, type: 2}
@@ -6936,7 +6936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Table
   cards: []
-  scaleCard: 0.6
+  scaleCard: 1
   prefab: {fileID: 0}
   slotGroup: {fileID: 822190176}
   hasGuide: 0

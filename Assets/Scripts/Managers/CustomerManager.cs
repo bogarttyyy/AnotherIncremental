@@ -35,7 +35,7 @@ public class CustomerManager : MonoBehaviour
             {
                 Debug.Log($"Card picked: {card.demandValue}");
                 card.buySell = EBuySell.Sell;
-                card.SetAskingPrice(card.marketPrice);
+                card.SetAskingPrice(RandomMarketPrice(card.marketPrice));
                 customerTable.InsertToNextEmptySlot(card);
             }
         }
