@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CardEventChannel sellCard;
     [SerializeField] private FloatEventChannel updateTime;
     [SerializeField] private IntEventChannel updateDay;
+    [SerializeField] private IntEventChannel updateRep;
     
     private void Awake()
     {
@@ -37,7 +38,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        updateCash?.Invoke(cash);
+        ResetUI();
         currentTime = duration;
     }
 
@@ -58,6 +59,7 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        ResetUI();
         ResetTime();
     }
 
@@ -135,6 +137,12 @@ public class GameManager : MonoBehaviour
     {
         currentTime = duration;
     }
+    
+    private void ResetUI()
+    {
+        updateCash?.Invoke(cash);
+        updateRep?.Invoke(rep);
+    }
 
     public void OnReset(InputAction.CallbackContext context)
     {
@@ -154,5 +162,7 @@ public class GameManager : MonoBehaviour
             ECardRarity.Rare => 3,
             _ => 0
         };
+        
+        updateRep?.Invoke(rep);
     }
 }

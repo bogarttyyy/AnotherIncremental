@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Enums;
+using NSBLib.Helpers;
 using UnityEngine;
 
 public class CustomerManager : MonoBehaviour
@@ -30,12 +31,12 @@ public class CustomerManager : MonoBehaviour
         {
             yield return new WaitForSeconds(sellRate);
             var demand = CustomerDemandValue();
-            Debug.Log($"CDV: {demand}");
+            NSBLogger.Log($"CDV: {demand}");
             var card = PickRandomCard(demand);
 
             if (card != null)
             {
-                Debug.Log($"Card picked: {card.demandValue}");
+                NSBLogger.Log($"Card picked: {card.demandValue}");
                 card.buySell = EBuySell.Sell;
                 card.SetAskingPrice(RandomMarketPrice(card.marketPrice));
                 customerTable.InsertToNextEmptySlot(card);
@@ -52,7 +53,7 @@ public class CustomerManager : MonoBehaviour
 
         var valuedCards = presentCards.Where(f => f.demandValue >= dem).ToList();
         var rand = Random.Range(0, valuedCards.Count);
-        Debug.Log($"Random sell index: {valuedCards.Count} {rand}");
+        NSBLogger.Log($"Random sell index: {valuedCards.Count} {rand}");
 
         if (valuedCards.Count > 0)
         {

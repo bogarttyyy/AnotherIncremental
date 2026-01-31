@@ -123,6 +123,7 @@ namespace Managers
                     break;
                 case EBuySell.Sell:
                     customerTable.RemoveCard(card);
+                    card.SetAskingPrice(0);
                     sellTable.InsertToNextEmptySlot(card);
                     cardAddedToSellTable?.Invoke(new Empty());
                     break;

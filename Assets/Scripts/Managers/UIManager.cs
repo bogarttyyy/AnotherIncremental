@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private TMP_Text cashText;
     [SerializeField] private TMP_Text dayText;
+    [SerializeField] private TMP_Text repText;
     [SerializeField] private Image timeProgressBar;
 
     private void Awake()
@@ -38,5 +39,10 @@ public class UIManager : MonoBehaviour
     public void UpdateDay(int day)
     {
         dayText.text = $"Day {day}";
+    }
+
+    public void UpdateRep(int rep)
+    {
+        repText.text = $"R{rep}";
     }
 }

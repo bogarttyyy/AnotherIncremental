@@ -12,6 +12,7 @@ public class Table : MonoBehaviour
     [SerializeField] private Card prefab;
     [SerializeField] private Transform slotGroup;
     [SerializeField] private bool hasGuide;
+    [SerializeField] private bool showDemandIndicator;
     private List<Transform> slotList;
     
     private Vector3 defaultCardScale = new(2.5f, 3.5f, 1f);
@@ -28,7 +29,13 @@ public class Table : MonoBehaviour
 
     private void SetupSlots()
     {
+        if (!slotGroup.gameObject.activeSelf)
+        {
+            slotGroup.gameObject.SetActive(true);
+        };
+        
         SetupVisualGuide();
+        
         
         var transforms = slotGroup.GetComponentsInChildren<Transform>();
         var slotTransforms = transforms.ToList();
@@ -86,6 +93,8 @@ public class Table : MonoBehaviour
             card.HasStarted(false);
             card.gameObject.SetActive(true);
         }
+        
+        card.ShowDemandIndicator(showDemandIndicator);
         
         var emptySlotIndex = cards.FindIndex(t => !t);
 

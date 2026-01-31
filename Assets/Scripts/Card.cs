@@ -193,4 +193,8 @@ public class Card : MonoBehaviour, IClickable, IRightClickable
     //         }
     //     }
     // }
+    public void ShowDemandIndicator(bool showDemandIndicator)
+    {
+        demandSpriteRenderer.gameObject.SetActive(showDemandIndicator);
+    }
 }
