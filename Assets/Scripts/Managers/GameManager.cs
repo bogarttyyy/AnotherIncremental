@@ -1,4 +1,3 @@
-using System;
 using Enums;
 using EventChannels;
 using NSBLib.EventChannelSystem;
@@ -7,162 +6,165 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+namespace Managers
 {
-    public static GameManager Instance { get; private set; }
+    public class GameManager : MonoBehaviour
+    {
+        public static GameManager Instance { get; private set; }
 
-    [SerializeField] private int dayNumber = 1;
-    [SerializeField] private float duration = 60f;
-    [SerializeField] private float currentTime;
-    [SerializeField] private int cash;
-    [SerializeField] private int rep;
+        [SerializeField] private int dayNumber = 1;
+        [SerializeField] private float duration = 60f;
+        [SerializeField] private float currentTime;
+        [SerializeField] private int cash;
+        [SerializeField] private int rep;
 
-    [SerializeField] private IntEventChannel updateCash;
-    [SerializeField] private CardEventChannel addToInventory;
-    [SerializeField] private CardEventChannel sellCard;
-    [SerializeField] private FloatEventChannel updateTime;
-    [SerializeField] private IntEventChannel updateDay;
-    [SerializeField] private IntEventChannel updateRep;
+        [SerializeField] private IntEventChannel updateCash;
+        [SerializeField] private CardEventChannel addToInventory;
+        [SerializeField] private CardEventChannel sellCard;
+        [SerializeField] private FloatEventChannel updateTime;
+        [SerializeField] private IntEventChannel updateDay;
+        [SerializeField] private IntEventChannel updateRep;
     
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
+        private void Awake()
         {
-            Destroy(gameObject);
-            return;
-        }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
-
-    private void Start()
-    {
-        ResetUI();
-        currentTime = duration;
-    }
-
-    private void FixedUpdate()
-    {
-        UpdateTimer();
-    }
-
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        ResetUI();
-        ResetTime();
-    }
-
-    public void OnCardClicked(Card card)
-    {
-        NSBLogger.Log($"Card clicked {card.askingPrice}");
-        switch (card.buySell)
-        {
-            case EBuySell.Buy:
-                BuyLogic(card);
-                break;
-            case EBuySell.Sell:
-                SellLogic(card);
-                break;
-        }
-    }
-
-    private void SellLogic(Card card)
-    {
-        NSBLogger.Log($"SOLD! ${card.askingPrice}");
-        cash += card.askingPrice;
-        updateCash?.Invoke(cash);
-        sellCard?.Invoke(card);
-    }
-
-    private void BuyLogic(Card card)
-    {
-        // NSBLogger.Log($"Asking for {card.askingPrice}");
-        // NSBLogger.Log($"Cash: {cash}");
-        if (card.askingPrice < cash)
-        {
-            cash -= card.askingPrice;
-            updateCash?.Invoke(cash);
-            
-            UpdateBoughtCard(card);
-            addToInventory?.Invoke(card);
-        }
-        else
-        {
-            NSBLogger.Log($"Not enough cash to buy {card.askingPrice}");
-        }
-    }
-
-    private void UpdateBoughtCard(Card card)
-    {
-        card.SetBoughtPrice(card.askingPrice);
-        card.SetAskingPrice(0);
-        card.SetBuySell(EBuySell.Unknown);
-    }
-
-    private void UpdateTimer()
-    {
-        if (currentTime > 0)
-        {
-            currentTime -= Time.deltaTime;
-            updateTime?.Invoke(currentTime / duration);
-
-            if (currentTime <= 0)
+            if (Instance != null && Instance != this)
             {
-                currentTime = 0;
-                updateTime?.Invoke(0f);
-                UpdateDayNumber();
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+
+        private void Start()
+        {
+            ResetUI();
+            currentTime = duration;
+        }
+
+        private void FixedUpdate()
+        {
+            UpdateTimer();
+        }
+
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            ResetUI();
+            ResetTime();
+        }
+
+        public void OnCardClicked(Card card)
+        {
+            NSBLogger.Log($"Card clicked {card.askingPrice}");
+            switch (card.buySell)
+            {
+                case EBuySell.Buy:
+                    BuyLogic(card);
+                    break;
+                case EBuySell.Sell:
+                    SellLogic(card);
+                    break;
             }
         }
-    }
 
-    private void UpdateDayNumber()
-    {
-        dayNumber +=1;
-        updateDay?.Invoke(dayNumber);
-        ResetTime();
-    }
-
-    private void ResetTime()
-    {
-        currentTime = duration;
-    }
-    
-    private void ResetUI()
-    {
-        updateCash?.Invoke(cash);
-        updateRep?.Invoke(rep);
-    }
-
-    public void OnReset(InputAction.CallbackContext context)
-    {
-        if (context.performed)
+        private void SellLogic(Card card)
         {
-            // NSBLogger.Log("Reset");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            NSBLogger.Log($"SOLD! ${card.askingPrice}");
+            cash += card.askingPrice;
+            updateCash?.Invoke(cash);
+            sellCard?.Invoke(card);
         }
-    }
-    
-    public void AddRep(Card card)
-    {
-        rep += card.rarity switch
+
+        private void BuyLogic(Card card)
         {
-            ECardRarity.Common => 1,
-            ECardRarity.Uncommon => 2,
-            ECardRarity.Rare => 3,
-            _ => 0
-        };
+            // NSBLogger.Log($"Asking for {card.askingPrice}");
+            // NSBLogger.Log($"Cash: {cash}");
+            if (card.askingPrice < cash)
+            {
+                cash -= card.askingPrice;
+                updateCash?.Invoke(cash);
+            
+                UpdateBoughtCard(card);
+                addToInventory?.Invoke(card);
+            }
+            else
+            {
+                NSBLogger.Log($"Not enough cash to buy {card.askingPrice}");
+            }
+        }
+
+        private void UpdateBoughtCard(Card card)
+        {
+            card.SetBoughtPrice(card.askingPrice);
+            card.SetAskingPrice(0);
+            card.SetBuySell(EBuySell.Unknown);
+        }
+
+        private void UpdateTimer()
+        {
+            if (currentTime > 0)
+            {
+                currentTime -= Time.deltaTime;
+                updateTime?.Invoke(currentTime / duration);
+
+                if (currentTime <= 0)
+                {
+                    currentTime = 0;
+                    updateTime?.Invoke(0f);
+                    UpdateDayNumber();
+                }
+            }
+        }
+
+        private void UpdateDayNumber()
+        {
+            dayNumber +=1;
+            updateDay?.Invoke(dayNumber);
+            ResetTime();
+        }
+
+        private void ResetTime()
+        {
+            currentTime = duration;
+        }
+    
+        private void ResetUI()
+        {
+            updateCash?.Invoke(cash);
+            updateRep?.Invoke(rep);
+        }
+
+        public void OnReset(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                // NSBLogger.Log("Reset");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
+    
+        public void AddRep(Card card)
+        {
+            rep += card.rarity switch
+            {
+                ECardRarity.Common => 1,
+                ECardRarity.Uncommon => 2,
+                ECardRarity.Rare => 3,
+                _ => 0
+            };
         
-        updateRep?.Invoke(rep);
+            updateRep?.Invoke(rep);
+        }
     }
 }

@@ -2,47 +2,50 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+namespace Managers
 {
-    public static UIManager Instance;
-
-    [SerializeField] private TMP_Text cashText;
-    [SerializeField] private TMP_Text dayText;
-    [SerializeField] private TMP_Text repText;
-    [SerializeField] private Image timeProgressBar;
-
-    private void Awake()
+    public class UIManager : MonoBehaviour
     {
-        if (Instance != null && Instance != this)
+        public static UIManager Instance;
+
+        [SerializeField] private TMP_Text cashText;
+        [SerializeField] private TMP_Text dayText;
+        [SerializeField] private TMP_Text repText;
+        [SerializeField] private Image timeProgressBar;
+
+        private void Awake()
         {
-            Destroy(gameObject);
-            return;
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
+            // DontDestroyOnLoad(gameObject);
         }
 
-        Instance = this;
-        // DontDestroyOnLoad(gameObject);
-    }
-
-    public void UpdateCashText(int cash)
-    {
-        cashText.text = $"${cash}";
-    }
-
-    public void UpdateTime(float time)
-    {
-        if (timeProgressBar != null)
+        public void UpdateCashText(int cash)
         {
-            timeProgressBar.fillAmount = time;
+            cashText.text = $"${cash}";
         }
-    }
 
-    public void UpdateDay(int day)
-    {
-        dayText.text = $"Day {day}";
-    }
+        public void UpdateTime(float time)
+        {
+            if (timeProgressBar != null)
+            {
+                timeProgressBar.fillAmount = time;
+            }
+        }
 
-    public void UpdateRep(int rep)
-    {
-        repText.text = $"R{rep}";
+        public void UpdateDay(int day)
+        {
+            dayText.text = $"Day {day}";
+        }
+
+        public void UpdateRep(int rep)
+        {
+            repText.text = $"R{rep}";
+        }
     }
 }
