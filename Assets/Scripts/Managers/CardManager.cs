@@ -80,7 +80,7 @@ namespace Managers
             {
                 ECardRarity.Rare => Random.Range(80, 100),
                 ECardRarity.Uncommon => Random.Range(25, 80),
-                _ => Random.Range(1, 25)
+                ECardRarity.Common => Random.Range(1, 25)
             };
             return marketPrice;
         }
